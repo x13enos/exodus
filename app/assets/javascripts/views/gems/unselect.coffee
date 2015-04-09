@@ -6,4 +6,3 @@ myapp.views.UnselectGemItemView = Marionette.ItemView.extend
 
   onRender: () ->
     this.attrs.object.remove()
-    paper.view.draw()

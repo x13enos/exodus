@@ -5,11 +5,10 @@ myapp.application.module 'GemsModule', (MyModule) ->
 
       myapp.collections.gems.add(
         type: gem_type,
-        image: new Raster(),
+        image: paper.image(),
         index: gem_index,
         row: row(gem_index),
-        column: column(gem_index),
-        at: gem_index
+        column: column(gem_index)
       )
 
   MyModule.select = (gem) ->
@@ -27,20 +26,22 @@ myapp.application.module 'GemsModule', (MyModule) ->
       myapp.collections.gems.remove_gems(update_step_data['delete_gems'])
       MyModule.create(update_step_data['new_gems_position'])
 
+  MyModule.update_positions = (data) ->
+    _.each data, (position_data) ->
+      gem = myapp.collections.gems.findWhere({ index: position_data['old_index'] })
+      gem.set({index: position_data['new_index']}) 
+
+  MyModule.get_new_positions = (index) ->
+    { column: column(index), row: row(index) }
+
 
 
   check_gems_position = (gem) ->
     first_index = myapp.libs.settings.selected_gem.attributes.index
     second_index = gem.attributes.index
     if stones_in_the_neighborhood(parseInt(first_index), parseInt(second_index))
-      gem.sync('gem_move', gem, 
-        data: $.param( 
-          ids: [first_index, second_index], 
-          game_id: myapp.libs.settings.game_id 
-        ),
-        success: (data) ->
-          MyModule.update(data)
-      )
+      swap_gems(first_index, second_index)
+      _.delay(sync_gems_position, 400, { g: gem, f_i: first_index, s_i: second_index })
     else
       alert "Fucking mistake!"
       myapp.libs.settings.selected_gem = false
@@ -59,3 +60,19 @@ myapp.application.module 'GemsModule', (MyModule) ->
 
   column = (gem_index) ->
     ((gem_index / 8) - row(gem_index)) * 8
+
+  swap_gems = (first_index, second_index) ->
+    first_gem = myapp.collections.gems.findWhere({index: first_index})
+    second_gem = myapp.collections.gems.findWhere({index: second_index})
+    first_gem.set({index: second_index})
+    second_gem.set({index: first_index})
+
+  sync_gems_position = ( params ) ->
+    params['g'].sync('gem_move', params['g'], 
+      data: $.param( 
+        ids: [params['f_i'], params['s_i']], 
+        game_id: myapp.libs.settings.game_id 
+      ),
+      success: (data) ->
+        MyModule.update(data)
+    )

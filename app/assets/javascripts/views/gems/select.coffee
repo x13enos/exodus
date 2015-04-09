@@ -6,15 +6,10 @@ myapp.views.SelectGemItemView = Marionette.ItemView.extend
     this.gem = this.attrs.gem
 
   onRender: () ->
-    rectangle = new Path.Rectangle
-        point: new_positions(this.gem.attributes),
-        size: [60, 60],
-        strokeColor: 'pink'
-    rectangle.rotate(45)
-    rectangle.strokeWidth = 3
+    rectangle = paper.rect((20 + (this.gem.attributes.column * 100)), (20 + (this.gem.attributes.row * 100)), 60, 60)
+    rectangle.attr({ stroke: 'pink', 'stroke-width': 3 })
     this.attrs.object = rectangle
-    paper.view.draw()
 
   new_positions = (t) -> 
-    new Point([20 + (t.column * 100), 20 + (t.row * 100)] )
+    { x: 20 + (t.column * 100), y: 20 + (t.row * 100) }
 

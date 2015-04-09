@@ -5,6 +5,7 @@ myapp.application.module 'EventsModule', (MyModule) ->
     remove_gems_from_collection()
     add_gem_frame_to_collection()
     remove_gem_frame_from_collection()
+    change_position_gem()
 
   add_gem_to_collection = () ->
     myapp.collections.gems.on "add", (gem) ->
@@ -21,6 +22,10 @@ myapp.application.module 'EventsModule', (MyModule) ->
   remove_gem_frame_from_collection = () ->
     myapp.collections.gem_frames.on "remove", (gem_frame) ->
       new myapp.views.UnselectGemItemView(model: gem_frame).render()
+
+  change_position_gem = () ->
+    myapp.collections.gems.on 'change:index', (gem) ->
+      new myapp.views.ChangePositionGemItemView(model: gem).render()
 
 
 

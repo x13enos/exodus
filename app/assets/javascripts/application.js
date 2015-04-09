@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //
-//= require paper-core.js
+//= require raphael.js 
 //= require handlebars.js
 //= require underscore.js
 //= require backbone.js

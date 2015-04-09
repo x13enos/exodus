@@ -6,12 +6,12 @@
 
     onRender: () ->
       that = this
-      this.attrs.image.position = new_positions(this.attrs)
-      this.attrs.image.image = myapp.libs.settings.images[this.attrs.type]
-      this.attrs.image.on 'click', () ->
+      this.attrs.image.attr(new_positions(this.attrs))
+      this.attrs.image.attr({ width: 70, height: 70 })
+      this.attrs.image.attr('src', myapp.libs.settings.images[this.attrs.type].src)
+      this.attrs.image.click () ->
         that.model.select()
-      paper.view.draw()
 
     new_positions = (t) -> 
-      new Point([50 + (t.column * 100), 50 + (t.row * 100)] )
+      { x: 15 + (t.column * 100), y: 15 + (t.row * 100) }
 
