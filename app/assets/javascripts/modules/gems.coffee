@@ -1,14 +1,15 @@
 myapp.application.module 'GemsModule', (MyModule) ->
 
   MyModule.create = (gems_data) ->
-    _.each gems_data, (gem_type, gem_index) ->
+    _.each gems_data, (gem) ->
 
       myapp.collections.gems.add(
-        type: gem_type,
+        type: gem['type'],
         image: paper.image(),
-        index: gem_index,
-        row: row(gem_index),
-        column: column(gem_index)
+        index: gem['index'],
+        row: row(gem['index']),
+        column: column(gem['index']),
+        top_offset: gem['position']
       )
 
   MyModule.select = (gem) ->
@@ -20,11 +21,6 @@ myapp.application.module 'GemsModule', (MyModule) ->
     else
       myapp.collections.gem_frames.add({ index: '1', gem: gem })
       myapp.libs.settings.selected_gem = gem
-
-  MyModule.update = (data) ->
-    _.each data, (update_step_data) ->
-      myapp.collections.gems.remove_gems(update_step_data['delete_gems'])
-      MyModule.create(update_step_data['new_gems_position'])
 
   MyModule.update_positions = (data) ->
     _.each data, (position_data) ->
@@ -39,9 +35,10 @@ myapp.application.module 'GemsModule', (MyModule) ->
   check_gems_position = (gem) ->
     first_index = myapp.libs.settings.selected_gem.attributes.index
     second_index = gem.attributes.index
-    if stones_in_the_neighborhood(parseInt(first_index), parseInt(second_index))
+    console.log(first_index, second_index)
+    if stones_in_the_neighborhood(first_index, second_index)
       swap_gems(first_index, second_index)
-      _.delay(sync_gems_position, 400, { g: gem, f_i: first_index, s_i: second_index })
+      _.delay(sync_gems_position, 500, { g: gem, f_i: first_index, s_i: second_index })
     else
       alert "Fucking mistake!"
       myapp.libs.settings.selected_gem = false
@@ -74,5 +71,5 @@ myapp.application.module 'GemsModule', (MyModule) ->
         game_id: myapp.libs.settings.game_id 
       ),
       success: (data) ->
-        MyModule.update(data)
+        myapp.application.Gems_UpdateSituationOnBoard_Module.perform(data)
     )

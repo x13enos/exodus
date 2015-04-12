@@ -2,7 +2,8 @@ class Exodus::Algorithms::DeleteCombinations
   attr_accessor :gems_position, :board, :new_positions
   def initialize(board, gems_position)
     @board = board
-    @gems_position = gems_position
+    @gems_position = gems_position.inject({}) { |memo, item| memo[Integer(item[0])] = item[1]; memo }
+    Rails.logger.info @gems_position
     @new_positions = {}
   end
 
@@ -17,33 +18,37 @@ class Exodus::Algorithms::DeleteCombinations
       delete_gems(indexes_removes_gems)
       result << { :delete_gems => indexes_removes_gems, :new_gems_position => add_new_gems }
     end
-    Rails.logger.info result
+    update_board
     return result
   end
 
   private
+
+  def update_board
+    board.update_attribute(:gems_position, gems_position)
+  end
 
   def indexes_removes_gems
     combination_by_horizontal + combination_by_vertical
   end
 
   def delete_gems(indexes)
-    indexes.each { |i| gems_position[i.to_s] = nil }
+    indexes.each { |i| gems_position[i] = nil }
   end
 
   def add_new_gems
     h = { :move_gems => [], :new_gems => [] }
     (0..63).to_a.reverse.each do |i|
-      if gems_position[i.to_s].nil?
+      if gems_position[i].nil?
         c_i = i
-        while (gems_position[i.to_s].nil? && c_i / 8 >= 0) do
+        while (gems_position[i].nil? && c_i / 8 >= 0) do
           c_i -= 8
-          if gems_position[c_i.to_s].present?
-            h[:move_gems] << move_gem(i.to_s, c_i.to_s)
+          if gems_position[c_i].present?
+            h[:move_gems] << move_gem(i, c_i)
           end
         end
-        if gems_position[i.to_s].nil?
-          h[:new_gems] << create_new_gem(i.to_s)
+        if gems_position[i].nil?
+          h[:new_gems] << create_new_gem(i)
         end
       end
     end
@@ -56,10 +61,10 @@ class Exodus::Algorithms::DeleteCombinations
   end
 
   def move_gem(current_gem_index, move_gem_index)
-    t = { :type => gems_position[move_gem_index.to_s],
+    t = { :type => gems_position[move_gem_index],
           :index => current_gem_index,
           :old_index => move_gem_index  }
-    gems_position[move_gem_index.to_s] = nil
+    gems_position[move_gem_index] = nil
     update_gem_position(t[:index], t[:type])
     t
   end
@@ -70,7 +75,7 @@ class Exodus::Algorithms::DeleteCombinations
     update_gem_position(index, random_gem)
     { :type => random_gem,
       :index => index,
-      :position => new_positions[index.to_i % 8] }
+      :position => new_positions[index % 8] }
   end
 
   def update_new_position_variables(index)
@@ -87,7 +92,7 @@ class Exodus::Algorithms::DeleteCombinations
     t = 0
     Board::MATRIX.each do |row|
       row.each_with_index do |hash_index, row_index|
-        if row_index != (row.size - 1) && gems_position[hash_index.to_s] == gems_position[(hash_index + 1).to_s]
+        if row_index != (row.size - 1) && gems_position[hash_index] == gems_position[(hash_index + 1)]
           t += 1
         else
           if t >= 2
@@ -105,7 +110,7 @@ class Exodus::Algorithms::DeleteCombinations
     t = 0
     Board::MATRIX.transpose.each do |column|
       column.each_with_index do |hash_index, column_index|
-        if column_index != (column.size - 1) && gems_position[hash_index.to_s] == gems_position[(hash_index + 8).to_s]
+        if column_index != (column.size - 1) && gems_position[hash_index] == gems_position[(hash_index + 8)]
           t += 1
         else
           if t >= 2

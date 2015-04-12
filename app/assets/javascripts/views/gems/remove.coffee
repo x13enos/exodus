@@ -6,6 +6,5 @@ myapp.views.RemoveGemItemView = Marionette.ItemView.extend
 
   onRender: () ->
     this.attrs.image.remove()
-    paper.view.draw()
 
 
