@@ -3,7 +3,6 @@ class Exodus::Algorithms::DeleteCombinations
   def initialize(board, gems_position)
     @board = board
     @gems_position = gems_position.inject({}) { |memo, item| memo[Integer(item[0])] = item[1]; memo }
-    Rails.logger.info @gems_position
     @new_positions = {}
   end
 
