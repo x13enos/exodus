@@ -25,6 +25,7 @@ myapp.application.module 'EventsModule', (MyModule) ->
 
   change_position_gem = () ->
     myapp.collections.gems.on 'change:index', (gem) ->
+      gem.update_column_and_row()
       new myapp.views.ChangePositionGemItemView(model: gem).render()
 
 

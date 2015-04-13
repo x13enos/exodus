@@ -1,11 +1,15 @@
 myapp.application.module 'Gems_UpdateSituationOnBoard_Module', (MyModule) ->
 
   MyModule.perform = (data) ->
-    t = data[0]
-    console.log t
-    myapp.collections.gems.remove_gems(t['delete_gems'])
-    move_gem(t['new_gems_position']['move_gems'])
-    create_new_gems(t['new_gems_position']['new_gems'])
+    _.each data, (data_step, i) ->
+      setTimeout (->
+        update_position(data_step)
+      ), 0 + ( i * 450 ) 
+
+  update_position = (data) ->
+    myapp.collections.gems.remove_gems(data['delete_gems'])
+    move_gem(data['new_gems_position']['move_gems'])
+    create_new_gems(data['new_gems_position']['new_gems'])
 
   move_gem = (data) ->
     _.each data, (gem) ->

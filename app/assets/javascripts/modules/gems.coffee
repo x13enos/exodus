@@ -30,12 +30,9 @@ myapp.application.module 'GemsModule', (MyModule) ->
   MyModule.get_new_positions = (index) ->
     { column: column(index), row: row(index) }
 
-
-
   check_gems_position = (gem) ->
     first_index = myapp.libs.settings.selected_gem.attributes.index
     second_index = gem.attributes.index
-    console.log(first_index, second_index)
     if stones_in_the_neighborhood(first_index, second_index)
       swap_gems(first_index, second_index)
       _.delay(sync_gems_position, 500, { g: gem, f_i: first_index, s_i: second_index })
