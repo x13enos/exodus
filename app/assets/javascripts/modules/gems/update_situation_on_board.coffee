@@ -1,10 +1,19 @@
 myapp.application.module 'Gems_UpdateSituationOnBoard_Module', (MyModule) ->
 
   MyModule.perform = (data) ->
+    if data['status'] == 'success'
+      change_gem_positions(data['result'])
+    else if data['status'] == 'error'
+      return_gems_on_init_places(data)
+
+  change_gem_positions = (data) ->
     _.each data, (data_step, i) ->
       setTimeout (->
         update_position(data_step)
-      ), 0 + ( i * 450 ) 
+      ), 0 + ( i * 650 )
+
+  return_gems_on_init_places = (data) ->
+      myapp.application.Gems_SwapTwoGems_Module.perform(data['gems_indexes'])
 
   update_position = (data) ->
     myapp.collections.gems.remove_gems(data['delete_gems'])

@@ -10,9 +10,9 @@ class Exodus::Actions::MoveGem
     changed_indexes
     service = Exodus::Algorithms::DeleteCombinations.new(board, gems_position)
     if service.delete_able?
-      service.perform
+      { :status => 'success', :result => service.perform }
     else
-      return 'error'
+      { :status => 'error', :gems_indexes => gems_indexes }
     end
   end
 

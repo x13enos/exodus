@@ -34,7 +34,7 @@ myapp.application.module 'GemsModule', (MyModule) ->
     first_index = myapp.libs.settings.selected_gem.attributes.index
     second_index = gem.attributes.index
     if stones_in_the_neighborhood(first_index, second_index)
-      swap_gems(first_index, second_index)
+      myapp.application.Gems_SwapTwoGems_Module.perform([first_index, second_index])
       _.delay(sync_gems_position, 500, { g: gem, f_i: first_index, s_i: second_index })
     else
       alert "Fucking mistake!"
@@ -54,12 +54,6 @@ myapp.application.module 'GemsModule', (MyModule) ->
 
   column = (gem_index) ->
     ((gem_index / 8) - row(gem_index)) * 8
-
-  swap_gems = (first_index, second_index) ->
-    first_gem = myapp.collections.gems.findWhere({index: first_index})
-    second_gem = myapp.collections.gems.findWhere({index: second_index})
-    first_gem.set({index: second_index})
-    second_gem.set({index: first_index})
 
   sync_gems_position = ( params ) ->
     params['g'].sync('gem_move', params['g'], 

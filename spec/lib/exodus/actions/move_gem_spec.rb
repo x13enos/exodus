@@ -43,7 +43,13 @@ describe Exodus::Algorithms::StartingGemsPosition do
     it "should return calculating destroying gems result" do
       allow(Exodus::Algorithms::DeleteCombinations).to receive(:new) { service_object }
       allow(service_object).to receive(:perform) { 'ok' }
-      expect(lib.perform).to eq(:delete_gems => 'ok')
+      expect(lib.perform).to eq({:status=>"success", :result=>"ok"})
+    end
+
+    it "should return error status" do
+      allow(Exodus::Algorithms::DeleteCombinations).to receive(:new) { service_object }
+      allow(service_object).to receive(:delete_able?) { false }
+      expect(lib.perform).to eq({ :status=> "error", :gems_indexes => ['2', '3'] })
     end
   end
 
