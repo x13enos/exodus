@@ -13,3 +13,20 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//
+//= require raphael.js
+//= require handlebars.js
+//= require underscore.js
+//= require backbone.js
+//= require marionette.js
+//= require custom_renderer
+//
+//= require app
+//
+//= require_tree ./models
+//= require_tree ./collections
+//= require_tree ./modules
+//= require_tree ./views
+//= require_tree ./libs
+//
+//= require init
