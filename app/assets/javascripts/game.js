@@ -29,4 +29,5 @@
 //= require_tree ./views
 //= require_tree ./libs
 //
+//= require faye_init
 //= require init

@@ -13,6 +13,8 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 
 gem 'mongoid', '~> 4.0.0'
+gem "thin"
+gem "faye"
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.0'

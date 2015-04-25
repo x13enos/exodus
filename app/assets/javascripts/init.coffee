@@ -7,4 +7,3 @@ $ ->
   myapp.application.EventsModule.init()
   myapp.application.ImagesLoaderModule.lazy_load()
   new myapp.views.MainItemView().render()
- 
