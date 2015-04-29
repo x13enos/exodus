@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users
-  root 'static#home'
+  devise_for :users, controllers: { registrations: "users/registrations" }
+  root 'home#index'
 
-  resources :game, :only => [] do
+  resources :game, :only => :index do
     get :starting_gems_position, :on => :collection
   end
 

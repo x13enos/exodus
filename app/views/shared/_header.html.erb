@@ -1,0 +1,13 @@
+<nav class="navbar navbar-default" role="navigation">
+  <div class='container'>
+    <div class='navbar-text navbar-right'>
+      <% if user_signed_in? %>
+        <%= current_user.name %>
+        <%= link_to t('views.client.logout').upcase, destroy_user_session_path, :method => :delete %>
+      <% else %>
+        <%= link_to t('views.client.sign_in').upcase, new_user_session_path %>
+        <%= link_to t('views.client.sign_up').upcase, new_user_registration_path %>
+      <% end %>
+    </div>
+  </div>
+</nav>
