@@ -1,5 +1,7 @@
 class User
   include Mongoid::Document
+  include Mongoid::Ids
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -25,11 +27,27 @@ class User
   field :last_sign_in_ip,    :type => String
 
   ## Confirmable
-  field :confirmation_token,   :type => String
-  field :confirmed_at,         :type => Time
-  field :confirmation_sent_at, :type => Time
-  field :unconfirmed_email,    :type => String # Only if using reconfirmable
+  # field :confirmation_token,   :type => String
+  # field :confirmed_at,         :type => Time
+  # field :confirmation_sent_at, :type => Time
+  # field :unconfirmed_email,    :type => String # Only if using reconfirmable
 
   field :name, :type => String
+
+  token :token, :length => 6
+
+  has_and_belongs_to_many :friends, class_name: 'User'
+
+  def add_friend(user_id)
+    user = User.find_by_token(user_id)
+    if self.id != user_id && !self.friends.include?(user)
+      self.friends << user
+    end
+  end
+
+  def remove_friend(user_id)
+    user = User.find_by_token(user_id)
+    self.friends.delete(user)
+  end
 
 end

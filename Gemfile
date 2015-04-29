@@ -15,6 +15,7 @@ gem 'devise'
 gem 'twitter-bootstrap-rails', :github => 'seyhunak/twitter-bootstrap-rails'
 
 gem 'mongoid', '~> 4.0.0'
+gem 'mongoid-ids'
 gem "thin"
 gem "faye"
 

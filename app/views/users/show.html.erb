@@ -1,0 +1,12 @@
+<div class='row'>
+  <h1>Player <%= @user.name %></h1>
+  <% if current_user.friends.include?(@user) %>
+    <button class='btn btn-danger'>
+      <%= link_to "Remove friend", remove_friend_user_path(@user.token), :method => :put%>
+    </button>
+  <% else %>
+    <button class='btn btn-success'>
+      <%= link_to "Add friend", add_friend_user_path(@user.token), :method => :put %>
+    </button>
+  <% end %>
+</div>

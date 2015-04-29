@@ -1,0 +1,6 @@
+<div class='row'>
+  <h1>Friends List</h1>
+  <% current_user.friends.each do |friend| %>
+    <div> <%= friend.name %></div>
+  <% end %>
+</div>

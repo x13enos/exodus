@@ -123,6 +123,8 @@ GEM
       moped (~> 2.0.0)
       origin (~> 2.1)
       tzinfo (>= 0.3.37)
+    mongoid-ids (0.1.7)
+      mongoid (~> 4.0.0)
     moped (2.0.4)
       bson (~> 2.2)
       connection_pool (~> 2.0)
@@ -231,6 +233,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   mongoid (~> 4.0.0)
+  mongoid-ids
   pg
   rails (= 4.1.2)
   rspec-rails (~> 2.0)
