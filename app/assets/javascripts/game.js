@@ -22,13 +22,13 @@
 //= require marionette.js
 //= require custom_renderer
 //
-//= require app
+//= require game/app
 //
-//= require_tree ./models
-//= require_tree ./collections
-//= require_tree ./modules
-//= require_tree ./views
-//= require_tree ./libs
+//= require_tree ./game/models
+//= require_tree ./game/collections
+//= require_tree ./game/modules
+//= require_tree ./game/views
+//= require_tree ./game/libs
 //
-//= require faye_init
-//= require init
+//= require game/faye_init
+//= require game/init
