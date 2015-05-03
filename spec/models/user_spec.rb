@@ -3,6 +3,7 @@ require 'spec_helper'
 describe User do
   context "Relations" do
     it { should have_and_belong_to_many(:friends) }
+    it { should have_many(:notifications) }
   end
 
   context "Validations" do
@@ -47,6 +48,35 @@ describe User do
         user_1.add_friend(user_2.token)
         user_1.remove_friend(user_2.token)
         expect(user_1.friends.count).to eq(0)
+      end
+    end
+
+    describe "#create_game_invite" do
+      let(:recipient) { create(:user) }
+      let(:sender) { create(:user) }
+      let(:notification) { build(:notification) }
+
+      before do
+        User.delete_all
+        Notification.delete_all
+      end
+
+      it "should create notification with right subspicies" do
+        allow_any_instance_of(Notification).to receive(:broadcast)
+        recipient.create_game_invite(sender.id)
+        expect(recipient.notifications.last.subspecies).to eq(Notification::INVITE_SUBSPECIES)
+      end
+
+      it "should create notification with right sender_id" do
+        allow_any_instance_of(Notification).to receive(:broadcast)
+        recipient.create_game_invite(sender.id)
+        expect(recipient.notifications.last.sender).to eq(sender)
+      end
+
+      it "should create notification with right sender_id" do
+        allow(recipient).to receive(:notifications) { double(:create => notification) }
+        expect(notification).to receive(:broadcast)
+        recipient.create_game_invite(sender.id)
       end
     end
   end

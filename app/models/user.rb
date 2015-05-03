@@ -25,7 +25,8 @@ class User
 
   token :token, :length => 6
 
-  has_and_belongs_to_many :friends, class_name: 'User'
+  has_and_belongs_to_many :friends, :class_name => 'User'
+  has_many :notifications
 
   validates :name, :presence => true
 
@@ -41,4 +42,8 @@ class User
     self.friends.delete(user)
   end
 
+  def create_game_invite(sender_id)
+    notification = notifications.create({ :subspecies => Notification::INVITE_SUBSPECIES, :sender_id => sender_id })
+    notification.broadcast
+  end
 end

@@ -2,7 +2,10 @@
   <h1>Friends List</h1>
   <% if current_user %>
     <% current_user.friends.each do |friend| %>
-      <div> <%= friend.name %></div>
+      <div>
+        <%= friend.name %>
+        <button class='btn btn-success send_invite' user-token=<%= friend.token %>>Send invite </button>
+      </div>
     <% end %>
   <% end %>
 </div>

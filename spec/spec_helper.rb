@@ -17,7 +17,7 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include Mongoid::Matchers, :type => :model
   # config.include Devise::TestHelpers, :type => :controller
-  # config.extend ControllerMacros, :type => :controller
+  config.extend ControllerMacros, :type => :controller
 end
 
 FactoryGirl::SyntaxRunner.class_eval do

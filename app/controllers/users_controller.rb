@@ -14,6 +14,12 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
+  def send_invite_to_game
+    @user.create_game_invite(current_user.id)
+    render :json => { :status => 'ok' }
+  end
+
+
   private
 
   def get_user

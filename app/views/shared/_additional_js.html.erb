@@ -1,0 +1,6 @@
+<script type='text/javascript'>
+  root_url = "<%= root_url %>"
+  <% if user_signed_in? %>
+    user_token = "<%= current_user.token %>"
+  <% end %>
+</script>

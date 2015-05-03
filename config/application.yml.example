@@ -1,0 +1,12 @@
+defaults: &defaults
+  faye:
+    url: 'http://localhost:8000/'
+
+development:
+    <<: *defaults
+
+test:
+    <<: *defaults
+
+production:
+    <<: *defaults

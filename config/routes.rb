@@ -13,5 +13,6 @@ Rails.application.routes.draw do
   resources :users, :only => [:show] do
     put :remove_friend, :on => :member
     put :add_friend, :on => :member
+    post :send_invite_to_game, :on => :member
   end
 end
