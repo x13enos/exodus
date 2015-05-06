@@ -1,9 +1,8 @@
 class Exodus::BroadcastDataToUser
-  attr_accessor :channel, :data, :method
+  attr_accessor :channel, :data
   def initialize(params)
     self.channel = params[:channel]
     self.data = params[:data]
-    self.method = params[:method]
   end
 
   def perform
@@ -14,7 +13,7 @@ class Exodus::BroadcastDataToUser
 
   def send_request_to_user
     RestClient::Request.execute(
-      :method => method,
+      :method => :post,
       :url => Settings.faye.url,
       :payload => { :message => request_message.to_json },
       :timeout => 2,

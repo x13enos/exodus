@@ -1,5 +1,6 @@
 class User
   include Mongoid::Document
+  include Mongoid::Timestamps
   include Mongoid::Ids
 
   devise :database_authenticatable, :registerable,
@@ -26,6 +27,7 @@ class User
   token :token, :length => 6
 
   has_and_belongs_to_many :friends, :class_name => 'User'
+  has_and_belongs_to_many :games
   has_many :notifications
 
   validates :name, :presence => true
@@ -45,5 +47,9 @@ class User
   def create_game_invite(sender_id)
     notification = notifications.create({ :subspecies => Notification::INVITE_SUBSPECIES, :sender_id => sender_id })
     notification.broadcast
+  end
+
+  def current_active_game
+    games.active.last
   end
 end

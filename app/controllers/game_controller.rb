@@ -2,11 +2,12 @@ class GameController < ApplicationController
   layout 'game'
 
   def index
-    @game_id = Game.create.id
+    @game = current_user.current_active_game
   end
 
-  def starting_gems_position
-    @start_gems_position = Exodus::Algorithms::StartingGemsPosition.new(params[:game_id]).perform
-    render :json => @start_gems_position
+  def new
+    Exodus::Game::CreateForTwoPlayers.new(current_user.token, params[:token]).perform
+    redirect_to game_index_path
   end
+
 end

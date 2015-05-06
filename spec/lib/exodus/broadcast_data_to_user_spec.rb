@@ -4,7 +4,7 @@ describe Exodus::BroadcastDataToUser do
 
   describe "#initialize" do
     let(:broadcast_params) do
-      { :channel => '/notifications', :data => '111', :method => :post}
+      { :channel => '/notifications', :data => '111' }
     end
     let(:service_object) { Exodus::BroadcastDataToUser.new(broadcast_params) }
 
@@ -15,15 +15,11 @@ describe Exodus::BroadcastDataToUser do
     it "should assign channel to instance variable" do
       expect(service_object.channel).to eq('/notifications')
     end
-
-    it "should assign method to instance variable" do
-      expect(service_object.method).to eq(:post)
-    end
   end
 
   describe "#perform" do
     let(:broadcast_params) do
-      { :channel => '/notifications', :data => '111', :method => :post}
+      { :channel => '/notifications', :data => '111' }
     end
     let(:service_object) { Exodus::BroadcastDataToUser.new(broadcast_params) }
 

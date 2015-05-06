@@ -2,8 +2,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: "user/registrations" }
   root 'home#index'
 
-  resources :game, :only => :index do
-    get :starting_gems_position, :on => :collection
+  resources :game, :only => [:index, :new] do
   end
 
   resources :gems, :only => [] do

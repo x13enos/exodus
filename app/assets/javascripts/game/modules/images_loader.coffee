@@ -15,14 +15,7 @@ myapp.application.module 'ImagesLoaderModule', (MyModule) ->
       images[i].onload = () ->
         imagesLoaded++
         if imagesLoaded == imageCount
-          myapp.models.board.sync(
-            'starting_gems_position', 
-             myapp.models.board, 
-             { success: (data) ->
-                 myapp.application.GemsModule.create(data)
-               data: $.param({game_id: myapp.libs.settings.game_id})
-             }
-          ) 
+          myapp.application.GemsModule.create(current_gems_position)
       i++
 
 

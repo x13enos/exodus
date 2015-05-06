@@ -7,4 +7,8 @@ class Board
   field :gems_position, :type => Hash
 
   belongs_to :game
+
+  def current_gems_position
+    Exodus::Game::CurrentGemsPosition.new(gems_position).perform
+  end
 end

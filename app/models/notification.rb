@@ -1,5 +1,6 @@
 class Notification
   include Mongoid::Document
+  include Mongoid::Timestamps
 
   INVITE_SUBSPECIES = 1
 
@@ -13,6 +14,6 @@ class Notification
   def broadcast
     Exodus::BroadcastDataToUser.new({ :method => :post,
                                       :channel => "/#{user.token}/notifications",
-                                      :data => { :type => subspecies, :sender => sender.token } }).perform
+                                      :data => { :type => subspecies, :sender => sender.try(:token) } }).perform
   end
 end

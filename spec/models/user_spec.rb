@@ -3,6 +3,7 @@ require 'spec_helper'
 describe User do
   context "Relations" do
     it { should have_and_belong_to_many(:friends) }
+    it { should have_and_belong_to_many(:games) }
     it { should have_many(:notifications) }
   end
 
@@ -77,6 +78,32 @@ describe User do
         allow(recipient).to receive(:notifications) { double(:create => notification) }
         expect(notification).to receive(:broadcast)
         recipient.create_game_invite(sender.id)
+      end
+    end
+
+    describe "#current_active_game" do
+      let(:player) { create(:user) }
+      let(:games_scope) { double }
+      let(:active_games_scope) { double(:last => '1') }
+
+      before do
+        User.delete_all
+        allow(player).to receive(:games) { games_scope }
+        allow(games_scope).to receive(:active) { active_games_scope }
+      end
+
+      it "should return all user games" do
+        expect(player).to receive(:games) { games_scope }
+        player.current_active_game
+      end
+
+      it "should call getting active games" do
+        expect(games_scope).to receive(:active) { active_games_scope }
+        player.current_active_game
+      end
+
+      it "should return first active game" do
+        expect(player.current_active_game).to eq('1')
       end
     end
   end

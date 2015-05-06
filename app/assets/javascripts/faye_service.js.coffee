@@ -11,8 +11,13 @@ FayeService.prototype.subscribe_on_notifications = ->
       button.parent().append(link)
       button.remove()
 
+FayeService.prototype.subscribe_on_creating_game = ->
+  this.client.subscribe '/' + user_token +  '/game/new', () ->
+    window.location.replace root_url + "game"
+
 
 $ ->
   faye_service = new FayeService()
   faye_service.subscribe_on_notifications()
+  faye_service.subscribe_on_creating_game()
 
