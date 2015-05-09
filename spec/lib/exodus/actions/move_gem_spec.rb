@@ -7,7 +7,9 @@ describe Exodus::Algorithms::StartingGemsPosition do
   let(:lib) { Exodus::Actions::MoveGem.new(game_params) }
 
   before do
+    Game.delete_all
     allow_any_instance_of(Game).to receive(:board) { board }
+    allow_any_instance_of(Exodus::Callbacks::MoveGem).to receive(:perform) { true }
   end
 
   describe "#initialize" do
@@ -16,8 +18,8 @@ describe Exodus::Algorithms::StartingGemsPosition do
       expect(lib.gems_position).to eq(board.gems_position)
     end
 
-    it "should add board to instance variable" do
-      expect(lib.board).to eq(board)
+    it "should add game to instance variable" do
+      expect(lib.game).to eq(game)
     end
 
     it "should create gems_indexes instance variable" do
@@ -26,30 +28,70 @@ describe Exodus::Algorithms::StartingGemsPosition do
   end
 
   describe "#perform" do
-    let(:service_object) { double(:perform => true, :delete_able? => true) }
+    let(:service_object) { double(:perform => true) }
 
-    it "should create service object for calculate destroying gems" do
-      expect(Exodus::Algorithms::DeleteCombinations).to receive(:new)
-        .with(board, { '2' => '7', '3' => '5' }) { service_object }
-      lib.perform
+    context "when system can delete gems" do
+      before do
+        allow(service_object).to receive(:delete_able?) { true }
+      end
+
+      it "should create service object for calculate destroying gems" do
+        expect(Exodus::Algorithms::DeleteCombinations).to receive(:new)
+          .with(board, { '2' => '7', '3' => '5' }) { service_object }
+        lib.perform
+      end
+
+      it "should start service object for calculate destroying gems" do
+        allow(Exodus::Algorithms::DeleteCombinations).to receive(:new) { service_object }
+        expect(service_object).to receive(:perform)
+        lib.perform
+      end
+
+      it "should return calculating destroying gems result" do
+        allow(Exodus::Algorithms::DeleteCombinations).to receive(:new) { service_object }
+        allow(service_object).to receive(:perform) { 'ok' }
+        expect(lib.perform).to eq({:status=>"success", :result=>"ok"})
+      end
+
+      it "should change active player" do
+        allow(lib).to receive(:game) { game }
+        expect(game).to receive(:change_active_player)
+        lib.perform
+      end
+
+      context "start broadcast data to second player" do
+        let(:service_object) { double(:perform => true) }
+        before do
+          allow(Exodus::Algorithms::DeleteCombinations).to receive(:new) { service_object }
+          allow(service_object).to receive(:perform) { '11' }
+          allow(lib).to receive(:game) { game }
+          allow(game).to receive(:active_player_token) {'344'}
+        end
+
+        it "should build broadcast service" do
+          expect(Exodus::Callbacks::MoveGem).to receive(:new)
+            .with(['2', '3'], { :status => 'success', :result => '11' }, '344') { double(:perform => true)  }
+          lib.perform
+        end
+
+        it "should start broadcast service" do
+          allow(Exodus::Callbacks::MoveGem).to receive(:new) { service_object }
+          expect(service_object).to receive(:perform)
+          lib.perform
+        end
+      end
     end
 
-    it "should start service object for calculate destroying gems" do
-      allow(Exodus::Algorithms::DeleteCombinations).to receive(:new) { service_object }
-      expect(service_object).to receive(:perform)
-      lib.perform
-    end
 
-    it "should return calculating destroying gems result" do
-      allow(Exodus::Algorithms::DeleteCombinations).to receive(:new) { service_object }
-      allow(service_object).to receive(:perform) { 'ok' }
-      expect(lib.perform).to eq({:status=>"success", :result=>"ok"})
-    end
+    context "when system can't delete gems" do
+      before do
+        allow(Exodus::Algorithms::DeleteCombinations).to receive(:new) { service_object }
+        allow(service_object).to receive(:delete_able?) { false }
+      end
 
-    it "should return error status" do
-      allow(Exodus::Algorithms::DeleteCombinations).to receive(:new) { service_object }
-      allow(service_object).to receive(:delete_able?) { false }
-      expect(lib.perform).to eq({ :status=> "error", :gems_indexes => ['2', '3'] })
+      it "should return error status" do
+        expect(lib.perform).to eq({ :status=> "error", :gems_indexes => ['2', '3'] })
+      end
     end
   end
 

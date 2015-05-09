@@ -14,4 +14,9 @@ class Game
   has_one :board
   has_and_belongs_to_many :players, :class_name => 'User'
 
+  def change_active_player
+    second_player_token = (players.map(&:token) - [active_player_token]).first
+    update(:active_player_token => second_player_token)
+  end
+
 end
