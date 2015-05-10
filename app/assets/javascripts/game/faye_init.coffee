@@ -6,6 +6,7 @@ FayeService.prototype.move_two_gems = ->
   this.client.subscribe '/'+ current_user_token + '/game/move_two_gems', (data) ->
     myapp.application.Gems_SwapTwoGems_Module.perform(_.values(data['gems_index']))
     setTimeout (->
+      myapp.application.ScreenModule.unblock()
       myapp.application.Gems_UpdateSituationOnBoard_Module.perform(data['result'])
     ), 400
 

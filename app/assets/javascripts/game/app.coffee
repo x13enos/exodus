@@ -2,7 +2,8 @@ window.myapp =
   views: {},
   models: {},
   collections: {},
-  libs: {}
+  libs: {},
+  layers: {}
 
 myapp.application = new Marionette.Application()
 

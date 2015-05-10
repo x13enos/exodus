@@ -31,7 +31,7 @@ myapp.application.module 'Gems_UpdateSituationOnBoard_Module', (MyModule) ->
       position = myapp.application.GemsModule.get_new_positions(gem['index'])
       myapp.collections.gems.add(
         type: gem['type'],
-        image: paper.image(),
+        image: myapp.layers.paper.image(),
         index: gem['index'],
         row: position['row'],
         column: position['column'],

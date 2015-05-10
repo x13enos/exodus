@@ -1,7 +1,9 @@
 <div class='container'>
-  <div id="board" game-id=<%= @game.id %> ></div>
+  <div class='canvas' id="board" game-id=<%= @game.id %> ></div>
+  <div class='canvas' id="screen"></div>
 </div>
 
 <script type="text/javascript">
   window.current_gems_position = <%= @game.board.current_gems_position.to_json.html_safe %>
+  window.active_player = <%= current_user.token == @game.active_player_token %>
 </script>

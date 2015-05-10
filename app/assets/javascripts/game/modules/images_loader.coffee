@@ -15,7 +15,11 @@ myapp.application.module 'ImagesLoaderModule', (MyModule) ->
       images[i].onload = () ->
         imagesLoaded++
         if imagesLoaded == imageCount
-          myapp.application.GemsModule.create(current_gems_position)
+          myapp.application.Gems_Create_Module.perform(current_gems_position)
+          window.setTimeout ( ->
+            if active_player == false
+              myapp.application.ScreenModule.block()
+          ), 100
       i++
 
 

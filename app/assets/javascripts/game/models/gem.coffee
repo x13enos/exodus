@@ -14,7 +14,7 @@ myapp.models.Gem = Backbone.Model.extend
     Backbone.sync(method, model, options)
 
   select: () ->
-    myapp.application.GemsModule.select(this)
+    myapp.application.Gems_Select_Module.perform(this)
 
   update_column_and_row: () ->
     this.set(myapp.application.GemsModule.get_new_positions(this.attributes.index))

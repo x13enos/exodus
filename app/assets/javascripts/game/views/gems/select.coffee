@@ -6,7 +6,7 @@ myapp.views.SelectGemItemView = Marionette.ItemView.extend
     this.gem = this.attrs.gem
 
   onRender: () ->
-    rectangle = paper.rect((20 + (this.gem.attributes.column * 100)), (20 + (this.gem.attributes.row * 100)), 60, 60)
+    rectangle = myapp.layers.paper.rect((20 + (this.gem.attributes.column * 100)), (20 + (this.gem.attributes.row * 100)), 60, 60)
     rectangle.attr({ stroke: 'pink', 'stroke-width': 3 })
     this.attrs.object = rectangle
 

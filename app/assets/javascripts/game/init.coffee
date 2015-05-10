@@ -5,5 +5,10 @@ $ ->
   myapp.collections.gem_frames = new myapp.collections.GemFrames
 
   myapp.application.EventsModule.init()
-  myapp.application.ImagesLoaderModule.lazy_load()
+
   new myapp.views.MainItemView().render()
+  myapp.application.ImagesLoaderModule.lazy_load()
+
+
+
+

@@ -1,0 +1,11 @@
+.canvas{
+  position:absolute;
+}
+
+#board{
+  z-index: 100
+}
+
+#screen{
+  z-index: 99
+}
