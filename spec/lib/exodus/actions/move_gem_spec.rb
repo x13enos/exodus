@@ -1,13 +1,25 @@
 require 'spec_helper'
 
 describe Exodus::Algorithms::StartingGemsPosition do
-  let(:game) { create(:game) }
+  let(:player_1) { create(:user) }
+  let(:player_2) { create(:user) }
+  let(:game) do
+    create(:game,
+           :active_player_token => player_1.token,
+           :inactive_player_token => player_2.token,
+           :players_data => {
+                              player_1.token => { :hp => 1 },
+                              player_2.token => { :hp => 2 }
+                            }
+          )
+  end
   let(:board) { create(:board, :gems_position => { '2' => '5', '3' => '7' }) }
   let(:game_params) { { :game_id => game.id, :ids => ['2', '3'] } }
   let(:lib) { Exodus::Actions::MoveGem.new(game_params) }
 
   before do
     Game.delete_all
+    allow(game).to receive(:players) { [player_1, player_2] }
     allow_any_instance_of(Game).to receive(:board) { board }
     allow_any_instance_of(Exodus::Callbacks::MoveGem).to receive(:perform) { true }
   end
@@ -37,7 +49,7 @@ describe Exodus::Algorithms::StartingGemsPosition do
 
       it "should create service object for calculate destroying gems" do
         expect(Exodus::Algorithms::DeleteCombinations).to receive(:new)
-          .with(board, { '2' => '7', '3' => '5' }) { service_object }
+          .with(game, { '2' => '7', '3' => '5' }) { service_object }
         lib.perform
       end
 
@@ -57,6 +69,29 @@ describe Exodus::Algorithms::StartingGemsPosition do
         allow(lib).to receive(:game) { game }
         expect(game).to receive(:change_active_player)
         lib.perform
+      end
+
+      context "when opponent died" do
+        let(:win_players_data) do
+          { player_1.token => { :hp => -1 }, player_2.token => { :hp => -2 } }
+        end
+
+        before do
+          allow(lib.game).to receive(:players_data) { win_players_data }
+        end
+
+        it "should close game" do
+          expect(lib.game).to receive(:close)
+          lib.perform
+        end
+
+        it "should return status end" do
+          expect(lib.perform[:status]).to eq('end')
+        end
+
+        it "should return sub_status win" do
+          expect(lib.perform[:sub_status]).to eq('win')
+        end
       end
 
       context "start broadcast data to second player" do

@@ -23,6 +23,7 @@ class User
   # field :unconfirmed_email,    :type => String # Only if using reconfirmable
 
   field :name, :type => String
+  field :hp, :type => Integer, :default => 30
 
   token :token, :length => 6
 

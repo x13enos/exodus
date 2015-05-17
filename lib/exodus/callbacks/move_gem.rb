@@ -6,10 +6,17 @@ class Exodus::Callbacks::MoveGem
   end
 
   def perform
+    change_broadcast_data_if_user_lose
     broadcast_data_to_second_player
   end
 
   private
+
+  def change_broadcast_data_if_user_lose
+    if broadcast_data[:result][:status] == 'end'
+      broadcast_data[:result][:sub_status] = 'lose'
+    end
+  end
 
   def broadcast_data_to_second_player
     Exodus::BroadcastDataToUser.new({

@@ -8,10 +8,11 @@ class Exodus::Actions::MoveGem
 
   def perform
     changed_indexes
-    service = Exodus::Algorithms::DeleteCombinations.new(game.board, gems_position)
+    service = Exodus::Algorithms::DeleteCombinations.new(game, gems_position)
     if service.delete_able?
-      result = { :status => 'success', :result => service.perform }
-      change_active_player_and_send_callback(result)
+      result = { :result => service.perform }
+      check_game_on_finishing(result)
+      change_active_player_and_send_callback(result.clone)
       result
     else
       { :status => 'error', :gems_indexes => gems_indexes }
@@ -19,6 +20,17 @@ class Exodus::Actions::MoveGem
   end
 
   private
+
+  def check_game_on_finishing(result)
+    result[:status] = if game.players_data[game.inactive_player_token][:hp] <= 0
+                        game.close
+                        result[:sub_status] = 'win'
+                        'end'
+                      else
+                        'success'
+                      end
+
+  end
 
   def change_active_player_and_send_callback(result)
     game.change_active_player

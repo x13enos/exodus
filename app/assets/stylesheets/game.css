@@ -9,3 +9,20 @@
 #screen{
   z-index: 99
 }
+
+.canvas_block{
+  width:800px;
+  height: 800px;
+}
+
+#player_hp{
+  color: red;
+  font-size: 36px;
+  margin-right: 10px;
+}
+
+#opponent_hp{
+  color: red;
+  font-size: 36px;
+  margin-left: 10px;
+}

@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 describe Exodus::Game::CreateForTwoPlayers do
-  let(:player_1) { create(:user) }
-  let(:player_2) { create(:user) }
+  let(:player_1) { create(:user, :hp => 100) }
+  let(:player_2) { create(:user, :hp => 101) }
   let(:service) { Exodus::Game::CreateForTwoPlayers.new(player_1.token, player_2.token) }
+  let(:game) { create(:game) }
 
   before do
     User.delete_all
@@ -17,17 +18,32 @@ describe Exodus::Game::CreateForTwoPlayers do
     it "should assign second_player" do
       expect(service.second_player).to eq(player_2)
     end
+
+    it "should assign players" do
+      expect(service.players).to eq([player_1, player_2])
+    end
   end
 
   describe "#perform" do
+    let(:players_data) do
+      { player_1.token => { :hp => 100 }, player_2.token => { :hp => 101 } }
+    end
+    let(:players_tokens) { [player_1.token, player_2.token] }
+
     before do
       Game.delete_all
       allow(Exodus::BroadcastDataToUser).to receive(:new) { double(:perform => true) }
     end
 
-    it "should create new game" do
+    it "should create new game with options" do
+      allow(service.players).to receive(:map) { players_tokens }
+      allow(players_tokens).to receive(:sample) { player_1.token }
+      expect(Game).to receive(:create)
+        .with({ :status => ::Game::ACTIVE_STATUS,
+                :active_player_token => player_1.token,
+                :inactive_player_token => player_2.token,
+                :players_data => players_data }) { game }
       service.perform
-      expect(Game.count).to eq(1)
     end
 
     it "should add players to new game" do

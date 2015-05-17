@@ -1,16 +1,26 @@
 myapp.application.module 'Gems_UpdateSituationOnBoard_Module', (MyModule) ->
 
   MyModule.perform = (data) ->
-    if data['status'] == 'success'
-      change_gem_positions(data['result'])
+    console.log(data)
+    if data['status'] == 'success' || data['status'] == 'end'
+      change_gem_positions(data)
     else if data['status'] == 'error'
       return_gems_on_init_places(data)
 
   change_gem_positions = (data) ->
-    _.each data, (data_step, i) ->
+    _.each data['result'], (data_step, i) ->
       setTimeout (->
         update_position(data_step)
       ), 0 + ( i * 650 )
+    if data['status'] == 'end'
+      setTimeout (->
+        finish_game(data['sub_status'])
+      ), data['result'].length * 650 
+
+  finish_game = (status) ->
+    myapp.application.ScreenModule.block()
+    alert("You " + status)
+    window.location.replace root_url
 
   return_gems_on_init_places = (data) ->
       myapp.application.Gems_SwapTwoGems_Module.perform(data['gems_indexes'])

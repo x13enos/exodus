@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Exodus::Algorithms::StartingGemsPosition do
   let(:gems_index) { [1,2]  }
-  let(:delete_data) { '11' }
+  let(:delete_data) { "11" }
   let(:user_token) { '000' }
   let(:lib) do
     Exodus::Callbacks::MoveGem.new(gems_index, delete_data, user_token)
@@ -21,6 +21,10 @@ describe Exodus::Algorithms::StartingGemsPosition do
 
   describe "#perform" do
     let(:broadcast_service) { double(:perform => true) }
+    let(:delete_data) { { :status => 'end', :sub_status => 'win' } }
+    let(:lib) do
+      Exodus::Callbacks::MoveGem.new(gems_index, delete_data, user_token)
+    end
 
     it "should build broadcast service" do
       expect(Exodus::BroadcastDataToUser).to receive(:new)
@@ -34,10 +38,12 @@ describe Exodus::Algorithms::StartingGemsPosition do
       expect(broadcast_service).to receive(:perform)
       lib.perform
     end
+
+    it "should change substatus if game end" do
+      allow(Exodus::BroadcastDataToUser).to receive(:new) { broadcast_service }
+      lib.perform
+      expect(lib.broadcast_data[:result][:sub_status]).to eq('lose')
+    end
   end
 end
 
-    # Exodus::BroadcastDataToUser.new({
-    #   :channel => "/#{second_player_token}/game/move_two_gems",
-    #   :data => broadcast_data
-    # }).perform

@@ -1,7 +1,8 @@
 class Exodus::Algorithms::DeleteCombinations
-  attr_accessor :gems_position, :board, :new_positions
-  def initialize(board, gems_position)
-    @board = board
+  attr_accessor :gems_position, :game, :board, :new_positions
+  def initialize(game, gems_position)
+    @game = game
+    @board = game.board
     @gems_position = gems_position.inject({}) { |memo, item| memo[Integer(item[0])] = item[1]; memo }
     @new_positions = {}
   end
@@ -11,20 +12,35 @@ class Exodus::Algorithms::DeleteCombinations
   end
 
   def perform
-    result = []
-    while(delete_able?) do
-      new_positions = {}
-      delete_gems(indexes_removes_gems)
-      result << { :delete_gems => indexes_removes_gems, :new_gems_position => add_new_gems }
-    end
+    result = update_positions_handler
     update_board
+    update_players_data
     return result
   end
 
   private
 
+  def update_positions_handler
+    result = []
+    while(delete_able?) do
+      delete_gems(indexes_removes_gems)
+      result << step_result
+    end
+
+    result
+  end
+
+  def step_result
+    { :delete_gems => indexes_removes_gems,
+      :new_gems_position => add_new_gems }
+  end
+
   def update_board
     board.update_attribute(:gems_position, gems_position)
+  end
+
+  def update_players_data
+    game.save
   end
 
   def indexes_removes_gems
@@ -32,7 +48,12 @@ class Exodus::Algorithms::DeleteCombinations
   end
 
   def delete_gems(indexes)
-    indexes.each { |i| gems_position[i] = nil }
+    indexes.each do |i|
+      if gems_position[i] == Board::DAMAGE_GEM
+        game.players_data[game.inactive_player_token][:hp] -= 1
+      end
+      gems_position[i] = nil
+    end
   end
 
   def add_new_gems

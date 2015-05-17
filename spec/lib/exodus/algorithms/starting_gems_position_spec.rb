@@ -22,7 +22,7 @@ describe Exodus::Algorithms::StartingGemsPosition do
     it "should return false if gems not have ability to deleting" do
       lib.perform
       board = Board.last
-      delete_gems_lib = Exodus::Algorithms::DeleteCombinations.new(board, board.gems_position)
+      delete_gems_lib = Exodus::Algorithms::DeleteCombinations.new(game, board.gems_position)
       expect(delete_gems_lib.delete_able?).to be_falsey
     end
 
