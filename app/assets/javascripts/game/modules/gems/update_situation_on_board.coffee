@@ -1,7 +1,6 @@
 myapp.application.module 'Gems_UpdateSituationOnBoard_Module', (MyModule) ->
 
   MyModule.perform = (data) ->
-    console.log(data)
     if data['status'] == 'success' || data['status'] == 'end'
       change_gem_positions(data)
     else if data['status'] == 'error'
@@ -9,26 +8,34 @@ myapp.application.module 'Gems_UpdateSituationOnBoard_Module', (MyModule) ->
 
   change_gem_positions = (data) ->
     _.each data['result'], (data_step, i) ->
-      setTimeout (->
-        update_position(data_step)
-      ), 0 + ( i * 650 )
-    if data['status'] == 'end'
-      setTimeout (->
-        finish_game(data['sub_status'])
-      ), data['result'].length * 650 
+      update_position(data_step, i)
 
-  finish_game = (status) ->
-    myapp.application.ScreenModule.block()
-    alert("You " + status)
-    window.location.replace root_url
+    change_active_player(data)
+    if data['status'] == 'end'
+      finish_game(data)
+
+  change_active_player = (data) ->
+    setTimeout (->
+      myapp.application.PlayerModule.change_status()
+    ), data['result'].length * 650 
+
+
+  finish_game = (data) ->
+    setTimeout (->
+      myapp.application.ScreenModule.block()
+      alert("You " + data['sub_status'])
+      window.location.replace root_url
+    ), data['result'].length * 650 
 
   return_gems_on_init_places = (data) ->
       myapp.application.Gems_SwapTwoGems_Module.perform(data['gems_indexes'])
 
-  update_position = (data) ->
-    myapp.collections.gems.remove_gems(data['delete_gems'])
-    move_gem(data['new_gems_position']['move_gems'])
-    create_new_gems(data['new_gems_position']['new_gems'])
+  update_position = (data, step) ->
+    setTimeout (->
+      myapp.collections.gems.remove_gems(data['delete_gems'])
+      move_gem(data['new_gems_position']['move_gems'])
+      create_new_gems(data['new_gems_position']['new_gems'])
+    ), 0 + ( step * 650 )
 
   move_gem = (data) ->
     _.each data, (gem) ->

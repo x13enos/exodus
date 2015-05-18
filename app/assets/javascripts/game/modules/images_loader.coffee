@@ -19,6 +19,8 @@ myapp.application.module 'ImagesLoaderModule', (MyModule) ->
           window.setTimeout ( ->
             if active_player == false
               myapp.application.ScreenModule.block()
+            else
+              myapp.libs.settings.active_player = true
           ), 100
       i++
 
