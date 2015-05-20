@@ -25,6 +25,7 @@
 //
 //= require_tree ./game/models
 //= require_tree ./game/collections
+//= require_tree ./game/controllers
 //= require_tree ./game/modules
 //= require_tree ./game/views
 //= require_tree ./game/libs

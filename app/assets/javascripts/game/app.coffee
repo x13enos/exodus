@@ -3,7 +3,8 @@ window.myapp =
   models: {},
   collections: {},
   libs: {},
-  layers: {}
+  layers: {},
+  controllers: {}
 
 myapp.application = new Marionette.Application()
 
