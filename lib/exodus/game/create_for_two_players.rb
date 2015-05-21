@@ -32,7 +32,15 @@ class Exodus::Game::CreateForTwoPlayers
 
   def players_data
     players.each_with_object({}) do |player, data_hash|
-      data_hash[player.token] = {}
+      data_hash[player.token] = {
+        :hp => player.hp,
+        :blue_mana => 0,
+        :red_mana => 0,
+        :green_mana => 0,
+        :yellow_mana => 0,
+        :expirience => 0,
+        :money => 0
+      }
       data_hash[player.token][:hp] = player.hp
     end
   end

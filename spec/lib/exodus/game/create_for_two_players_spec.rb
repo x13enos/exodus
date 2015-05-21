@@ -26,7 +26,25 @@ describe Exodus::Game::CreateForTwoPlayers do
 
   describe "#perform" do
     let(:players_data) do
-      { player_1.token => { :hp => 100 }, player_2.token => { :hp => 101 } }
+      { player_1.token => { :hp => 100,
+                            :money => 0,
+                            :red_mana => 0,
+                            :blue_mana => 0,
+                            :green_mana => 0,
+                            :yellow_mana => 0,
+                            :money => 0,
+                            :expirience => 0
+                          },
+        player_2.token => { :hp => 101,
+                            :money => 0,
+                            :red_mana => 0,
+                            :blue_mana => 0,
+                            :green_mana => 0,
+                            :yellow_mana => 0,
+                            :money => 0,
+                            :expirience => 0
+                          }
+      }
     end
     let(:players_tokens) { [player_1.token, player_2.token] }
 

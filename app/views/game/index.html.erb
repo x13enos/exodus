@@ -1,13 +1,13 @@
 <div class='container'>
-  <div id='player_hp' class='pull-left'>
-    <%= @game.players_data[current_user.token][:hp] %>
+  <div class='player_data pull-left'>
+    <%= render :partial => 'player_data', :locals => { :player_data => @game.players_data[current_user.token] } %>
   </div>
   <div class='canvas_block pull-left'>
     <div class='canvas' id="board" game-id=<%= @game.id %> ></div>
     <div class='canvas' id="screen"></div>
   </div>
-  <div id='opponent_hp' class='pull-left'>
-    <%= @game.players_data[@game.opponent(current_user).token][:hp] %>
+  <div class='opponent_data pull-left'>
+    <%= render :partial => 'player_data', :locals => { :player_data => @game.players_data[@game.opponent(current_user).token] } %>
   </div>
 </div>
 
