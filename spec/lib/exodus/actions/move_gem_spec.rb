@@ -8,8 +8,24 @@ describe Exodus::Algorithms::StartingGemsPosition do
            :active_player_token => player_1.token,
            :inactive_player_token => player_2.token,
            :players_data => {
-                              player_1.token => { :hp => 1 },
-                              player_2.token => { :hp => 2 }
+                              player_1.token => {
+                                :hp => 1,
+                                :red_mana => 0,
+                                :yellow_mana => 0,
+                                :blue_mana => 0,
+                                :green_mana => 0,
+                                :expirience => 0,
+                                :money => 0
+                              },
+                              player_2.token => {
+                                :hp => 2,
+                                :red_mana => 0,
+                                :yellow_mana => 0,
+                                :blue_mana => 0,
+                                :green_mana => 0,
+                                :expirience => 0,
+                                :money => 0
+                              }
                             }
           )
   end
@@ -73,7 +89,26 @@ describe Exodus::Algorithms::StartingGemsPosition do
 
       context "when opponent died" do
         let(:win_players_data) do
-          { player_1.token => { :hp => -1 }, player_2.token => { :hp => -2 } }
+          {
+            player_1.token => {
+              :hp => -1,
+              :red_mana => 0,
+              :yellow_mana => 0,
+              :blue_mana => 0,
+              :green_mana => 0,
+              :expirience => 0,
+              :money => 0
+            },
+            player_2.token => {
+              :hp => -2,
+              :red_mana => 0,
+              :yellow_mana => 0,
+              :blue_mana => 0,
+              :green_mana => 0,
+              :expirience => 0,
+              :money => 0
+            }
+          }
         end
 
         before do
