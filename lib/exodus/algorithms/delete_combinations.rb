@@ -52,7 +52,7 @@ class Exodus::Algorithms::DeleteCombinations
   def delete_gems(indexes)
     user_params = game.players_data[game.inactive_player_token]
     indexes.each do |i|
-      write_changes_to_user_params(user_params, i)
+      write_changes_to_user_params(user_params, i) if gems_position[i].present?
       gems_position[i] = nil
     end
   end
@@ -61,8 +61,6 @@ class Exodus::Algorithms::DeleteCombinations
       if gems_position[i] == Board::DAMAGE_GEM
         user_params[:hp] -= 1
       else
-        Rails.logger.info gems_position
-        Rails.logger.info i
         user_params[GEMS_TYPE[gems_position[i]]] += 1
       end
   end
