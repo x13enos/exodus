@@ -3,7 +3,7 @@
   <% if current_user %>
     <% current_user.friends.each do |friend| %>
       <div>
-        <%= friend.name %>
+        <%= friend.nickname %>
         <button class='btn btn-success send_invite' user-token=<%= friend.token %>>Send invite </button>
       </div>
     <% end %>

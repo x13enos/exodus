@@ -5,12 +5,12 @@ class UsersController < ApplicationController
   end
 
   def add_friend
-    current_user.add_friend(params[:id])
+    current_user.add_friend(@user.token)
     redirect_to root_path
   end
 
   def remove_friend
-    current_user.remove_friend(params[:id])
+    current_user.remove_friend(@user.token)
     redirect_to root_path
   end
 
@@ -23,6 +23,6 @@ class UsersController < ApplicationController
   private
 
   def get_user
-    @user = User.find_by_token(params[:id])
+    @user = User.find_by(:token => params[:id]) || User.find_by(:nickname => params[:id])
   end
 end

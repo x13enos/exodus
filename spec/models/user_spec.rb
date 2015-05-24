@@ -8,7 +8,8 @@ describe User do
   end
 
   context "Validations" do
-    it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:nickname) }
+    it { should validate_uniqueness_of(:nickname) }
   end
 
   context "Instance methods" do

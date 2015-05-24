@@ -22,7 +22,7 @@ class User
   # field :confirmation_sent_at, :type => Time
   # field :unconfirmed_email,    :type => String # Only if using reconfirmable
 
-  field :name, :type => String
+  field :nickname, :type => String
   field :hp, :type => Integer, :default => 30
 
   token :token, :length => 6
@@ -31,7 +31,8 @@ class User
   has_and_belongs_to_many :games
   has_many :notifications
 
-  validates :name, :presence => true
+  validates :nickname, :presence => true
+  validates :nickname, :uniqueness => true
 
   def add_friend(user_id)
     user = User.find_by_token(user_id)

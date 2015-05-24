@@ -29,9 +29,15 @@ describe UsersController do
       expect(response).to be_redirect
     end
 
-    it "should assigns user" do
+    it "should assigns user if we use user token" do
       allow(User).to receive(:find_by_token) { user }
       put 'add_friend', :id => user.token
+      expect(assigns(:user)).to eq(user)
+    end
+
+    it "should assigns user if we use user token" do
+      allow(User).to receive(:find_by_nickname) { user }
+      put 'add_friend', :id => user.nickname
       expect(assigns(:user)).to eq(user)
     end
 

@@ -2,7 +2,7 @@
   <div class='container'>
     <div class='navbar-text navbar-right'>
       <% if user_signed_in? %>
-        <%= current_user.name %>
+        <%= current_user.nickname %>
         <%= link_to t('views.client.logout').upcase, destroy_user_session_path, :method => :delete %>
       <% else %>
         <%= link_to t('views.client.sign_in').upcase, new_user_session_path %>
