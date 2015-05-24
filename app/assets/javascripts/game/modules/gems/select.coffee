@@ -17,8 +17,7 @@ myapp.application.module 'Gems_Select_Module', (MyModule) ->
       myapp.application.Gems_SwapTwoGems_Module.perform([first_index, second_index])
       _.delay(sync_gems_position, 500, { g: gem, f_i: first_index, s_i: second_index })
     else
-      alert "Fucking mistake!"
-      myapp.libs.settings.selected_gem = false
+      new myapp.views.GameAlert({ text:'Wrong Move' }).render()
 
   stones_in_the_neighborhood = (f_i, s_i) ->
     gems_in_same_row(f_i, s_i) || gems_in_same_column(f_i, s_i)

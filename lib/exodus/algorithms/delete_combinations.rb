@@ -61,6 +61,8 @@ class Exodus::Algorithms::DeleteCombinations
       if gems_position[i] == Board::DAMAGE_GEM
         user_params[:hp] -= 1
       else
+        Rails.logger.info gems_position
+        Rails.logger.info i
         user_params[GEMS_TYPE[gems_position[i]]] += 1
       end
   end
