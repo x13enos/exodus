@@ -99,12 +99,16 @@ class Exodus::Algorithms::DeleteCombinations
   end
 
   def create_new_gem(index)
-    random_gem = (0..6).to_a.sample
+    new_gem = random_gem
     update_new_position_variables(index)
-    update_gem_position(index, random_gem)
-    { :type => random_gem,
+    update_gem_position(index, new_gem)
+    { :type => new_gem,
       :index => index,
       :position => new_positions[index % 8] }
+  end
+
+  def random_gem
+    (0..6).to_a.sample
   end
 
   def update_new_position_variables(index)
