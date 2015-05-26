@@ -1,3 +1,11 @@
+<% if player.avatar.present? %>
+  <div class='user_avatar'>
+    <%= image_tag player.avatar.thumb %>
+  </div>
+<% end %>
+  <div class='user_nickname'>
+    <%= player.nickname %>
+  </div>
 <div class='player_hp'>
   HP:
   <span class='value'>

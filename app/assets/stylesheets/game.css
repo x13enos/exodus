@@ -17,7 +17,12 @@
 
 .player_hp{
   color: red;
-  font-size: 36px;
+  font-size: 24px;
   margin-right: 10px;
+}
+
+.user_nickname{
+  font-size: 30px;
+  text-align: center;
 }
 
