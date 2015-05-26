@@ -1,5 +1,5 @@
 <div class='row'>
-  <h1>Player <%= @user.name %></h1>
+  <h1>Player <%= @user.nickname %></h1>
   <% if current_user.friends.include?(@user) %>
     <button class='btn btn-danger'>
       <%= link_to "Remove friend", remove_friend_user_path(@user.token), :method => :put%>

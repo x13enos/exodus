@@ -1,7 +1,19 @@
 class UsersController < ApplicationController
-  before_action :get_user
+  before_action :get_user, :except => [:edit, :update]
+  before_action :get_user_by_id, :only => [:edit, :update]
 
   def show
+  end
+
+  def edit
+  end
+
+  def update
+    if @user.update_attributes(user_params)
+      redirect_to root_path, :notice => "User data was succesfully updated"
+    else
+      render :edit
+    end
   end
 
   def add_friend
@@ -24,5 +36,13 @@ class UsersController < ApplicationController
 
   def get_user
     @user = User.find_by(:token => params[:id]) || User.find_by(:nickname => params[:id])
+  end
+
+  def get_user_by_id
+    @user = User.find(params[:id])
+  end
+
+  def user_params
+    params.require(:user).permit(:nickname, :avatar, :avatar_cache)
   end
 end

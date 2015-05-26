@@ -16,6 +16,61 @@ describe UsersController do
     end
   end
 
+  describe 'GET edit' do
+    let(:user) { create(:user) }
+
+    it "returns http success" do
+      get 'edit', :id => user.id
+      expect(response).to be_success
+    end
+
+    it "should assigns user" do
+      allow(User).to receive(:find_by_token) { user }
+      get 'edit', :id => user.id
+      expect(assigns(:user)).to eq(user)
+    end
+  end
+
+  describe 'PUT update' do
+    let(:user) { create(:user) }
+
+    it "should assigns user" do
+      allow(User).to receive(:find_by_token) { user }
+      put 'update', :id => user.id, :user => { :nickname => 'example' }
+      expect(assigns(:user)).to eq(user)
+    end
+
+    it "should render edit action if user pass not valid params" do
+      User.delete_all
+      create(:user, :nickname => 'gggg')
+      allow(User).to receive(:find_by_token) { user }
+      put 'update', :id => user.id, :user => { :nickname => 'gggg' }
+      expect(response).to render_template('edit')
+    end
+
+    it "should redirect to root path if user pass valid params" do
+      User.delete_all
+      allow(User).to receive(:find_by_token) { user }
+      put 'update', :id => user.id, :user => { :nickname => 'gggg' }
+      expect(response).to redirect_to(root_path)
+    end
+  end
+
+  describe 'GET edit' do
+    let(:user) { create(:user) }
+
+    it "returns http success" do
+      get 'show', :id => user.token
+      expect(response).to be_success
+    end
+
+    it "should assigns user" do
+      allow(User).to receive(:find_by_token) { user }
+      get 'show', :id => user.token
+      expect(assigns(:user)).to eq(user)
+    end
+  end
+
   describe 'PUT add_friend' do
     let(:user) { create(:user) }
     let(:friend) { create(:user) }

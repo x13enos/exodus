@@ -14,6 +14,9 @@ gem 'devise'
 gem 'settingslogic'
 gem 'rest-client'
 gem 'twitter-bootstrap-rails', :github => 'seyhunak/twitter-bootstrap-rails'
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+gem "mini_magick"
+gem 'simple_form'
 
 gem 'mongoid', '~> 4.0.0'
 gem 'mongoid-ids'

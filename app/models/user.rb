@@ -27,6 +27,8 @@ class User
 
   token :token, :length => 6
 
+  mount_uploader :avatar, ::UserAvatarUploader
+
   has_and_belongs_to_many :friends, :class_name => 'User'
   has_and_belongs_to_many :games
   has_many :notifications
