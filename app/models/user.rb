@@ -24,6 +24,10 @@ class User
 
   field :nickname, :type => String
   field :hp, :type => Integer, :default => 30
+  field :green_mana, :type => Integer, :default => 10
+  field :yellow_mana, :type => Integer, :default => 10
+  field :red_mana, :type => Integer, :default => 10
+  field :blue_mana, :type => Integer, :default => 10
 
   token :token, :length => 6
 

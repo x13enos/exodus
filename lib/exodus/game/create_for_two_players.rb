@@ -34,6 +34,10 @@ class Exodus::Game::CreateForTwoPlayers
     players.each_with_object({}) do |player, data_hash|
       data_hash[player.token] = {
         :hp => player.hp,
+        :max_blue_mana => player.blue_mana,
+        :max_red_mana => player.red_mana,
+        :max_yellow_mana => player.yellow_mana,
+        :max_green_mana => player.green_mana,
         :blue_mana => 0,
         :red_mana => 0,
         :green_mana => 0,
