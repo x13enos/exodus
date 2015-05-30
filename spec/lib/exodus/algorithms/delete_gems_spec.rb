@@ -86,9 +86,9 @@ describe Exodus::Algorithms::DeleteGems do
     end
 
     it "should return updating player hp after gems deleting" do
-      lib.gems_position[2] = Board::GEMS_TYPE.index(:hp)
-      lib.gems_position[3] = Board::GEMS_TYPE.index(:hp)
-      lib.gems_position[4] = Board::GEMS_TYPE.index(:hp)
+      lib.gems_position[2] = Board::GEMS_TYPE.key(:hp)
+      lib.gems_position[3] = Board::GEMS_TYPE.key(:hp)
+      lib.gems_position[4] = Board::GEMS_TYPE.key(:hp)
       expect(lib.perform[:user_params][player_2.token][:hp]).to eq(-2)
     end
 

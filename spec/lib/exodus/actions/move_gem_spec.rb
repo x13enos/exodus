@@ -10,29 +10,31 @@ describe Exodus::Algorithms::StartingGemsPosition do
            :players_data => {
                               player_1.token => {
                                 :hp => 1,
-                                :max_red_mana => player_1.red_mana,
+                                :max_alchemy => player_1.alchemy,
                                 :max_green_mana => player_1.green_mana,
-                                :max_yellow_mana => player_1.yellow_mana,
+                                :max_gear => player_1.gear,
                                 :max_blue_mana => player_1.blue_mana,
-                                :red_mana => 0,
-                                :yellow_mana => 0,
+                                :max_piston => player_1.piston,
+                                :alchemy => 0,
+                                :gear => 0,
                                 :blue_mana => 0,
                                 :green_mana => 0,
-                                :expirience => 0,
-                                :money => 0
+                                :piston => 0,
+                                :expirience => 0
                               },
                               player_2.token => {
                                 :hp => 2,
-                                :max_red_mana => player_2.red_mana,
+                                :max_alchemy => player_2.alchemy,
                                 :max_green_mana => player_2.green_mana,
-                                :max_yellow_mana => player_2.yellow_mana,
+                                :max_gear => player_2.gear,
                                 :max_blue_mana => player_2.blue_mana,
-                                :red_mana => 0,
-                                :yellow_mana => 0,
+                                :max_piston => player_2.piston,
+                                :alchemy => 0,
+                                :gear => 0,
                                 :blue_mana => 0,
                                 :green_mana => 0,
-                                :expirience => 0,
-                                :money => 0
+                                :piston => 0,
+                                :expirience => 0
                               }
                             }
           )
@@ -100,29 +102,31 @@ describe Exodus::Algorithms::StartingGemsPosition do
           {
             player_1.token => {
               :hp => -1,
-              :max_red_mana => player_1.red_mana,
+              :max_alchemy => player_1.alchemy,
               :max_green_mana => player_1.green_mana,
-              :max_yellow_mana => player_1.yellow_mana,
+              :max_gear => player_1.gear,
               :max_blue_mana => player_1.blue_mana,
-              :red_mana => 0,
-              :yellow_mana => 0,
+              :max_piston => player_1.piston,
+              :alchemy => 0,
+              :gear => 0,
               :blue_mana => 0,
               :green_mana => 0,
-              :expirience => 0,
-              :money => 0
+              :piston => 0,
+              :expirience => 0
             },
             player_2.token => {
               :hp => -2,
-              :max_red_mana => player_2.red_mana,
+              :max_alchemy => player_2.alchemy,
               :max_green_mana => player_2.green_mana,
-              :max_yellow_mana => player_2.yellow_mana,
+              :max_gear => player_2.gear,
               :max_blue_mana => player_2.blue_mana,
-              :red_mana => 0,
-              :yellow_mana => 0,
+              :max_piston => player_2.piston,
+              :alchemy => 0,
+              :gear => 0,
               :blue_mana => 0,
               :green_mana => 0,
-              :expirience => 0,
-              :money => 0
+              :piston => 0,
+              :expirience => 0
             }
           }
         end

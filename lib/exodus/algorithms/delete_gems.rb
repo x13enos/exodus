@@ -1,6 +1,4 @@
 class Exodus::Algorithms::DeleteGems
-  GEMS_TYPE_MANA = [:blue_mana, :green_mana, :red_mana, :yellow_mana]
-
   attr_accessor :game, :gems_position, :user_params, :indexes
 
   def initialize(indexes, game, gems_position)
