@@ -1,7 +1,7 @@
 myapp.application.module 'ImagesLoaderModule', (MyModule) ->
   MyModule.lazy_load = () ->
     images = []
-    image_name_array = ['blue_gem', "green_gem", "red_gem", "yellow_gem", "scull", "star", "coins"]
+    image_name_array = _.values(myapp.libs.settings.gems_type) 
     _.map image_name_array, (name) ->
       img = new Image
       img.src = '/assets/' + name + '.png'

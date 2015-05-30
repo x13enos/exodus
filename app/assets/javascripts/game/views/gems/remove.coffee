@@ -16,14 +16,14 @@ myapp.views.RemoveGemItemView = Marionette.ItemView.extend
     $(selector).children('.value').text(new_value)
 
   calculate_new_value = (value, gem, selector) ->
-    if gem == 4
+    if gem.toString() == _.invert(myapp.libs.settings.gems_type)['hp']
       value -= 1
     else
       if user_not_reached_limit_mana(value, gem, selector)
         value += 1
 
   user_not_reached_limit_mana = (value, gem, selector) ->
-    if gem < 4
+    if _.indexOf(_.keys(myapp.libs.settings.mana_gems), gem.toString()) >= 0
       parseInt($(selector).children('.max_value').text()) > value
     else
       return true

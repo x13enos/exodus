@@ -1,5 +1,4 @@
 class Exodus::Algorithms::DeleteCombinations
-  GEMS_TYPE = [:blue_mana, :green_mana, :red_mana, :yellow_mana, :hp, :expirience, :money]
 
   attr_accessor :gems_position, :game, :board, :new_positions
   def initialize(game, gems_position)
@@ -50,9 +49,8 @@ class Exodus::Algorithms::DeleteCombinations
   end
 
   def delete_gems(indexes)
-    user_params = game.players_data[game.inactive_player_token]
-    result = Exodus::Algorithms::DeleteGems.new(indexes, user_params, gems_position).perform
-    game.players_data[game.inactive_player_token] = result[:user_params]
+    result = Exodus::Algorithms::DeleteGems.new(indexes, game, gems_position).perform
+    game.players_data = result[:user_params]
     gems_position = result[:gems_position]
   end
 

@@ -15,4 +15,6 @@
   window.current_gems_position = <%= @game.board.current_gems_position.to_json.html_safe %>
   window.active_player = <%= current_user.token == @game.active_player_token %>
   window.env = "<%= Rails.env %>"
+  window.gems_type = <%= Board::GEMS_TYPE.to_json.html_safe  %>
+  window.mana_gems= <%= Board::MANA_GEMS.to_json.html_safe  %>
 </script>

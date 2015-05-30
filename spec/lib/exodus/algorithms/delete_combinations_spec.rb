@@ -133,7 +133,7 @@ describe Exodus::Algorithms::DeleteCombinations do
       it "should update  players data" do
         allow(lib).to receive(:random_gem).and_return(5, 6, 4)
         lib.perform
-        expect(game.reload.players_data[player_2.token]['green_mana']).to eq(3)
+        expect(game.reload.players_data[player_1.token]['green_mana']).to eq(3)
       end
     end
   end
