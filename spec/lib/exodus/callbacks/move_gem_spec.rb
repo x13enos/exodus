@@ -11,7 +11,7 @@ describe Exodus::Algorithms::StartingGemsPosition do
   describe "#initialize" do
 
     it "should add broadcast data to instance variable" do
-      expect(lib.broadcast_data).to eq({ :gems_index => [1,2], :result => '11' })
+      expect(lib.broadcast_data).to eq({ :gems_index => [1,2], :respond => '11' })
     end
 
     it "should add second player token to instance variable" do
@@ -42,7 +42,7 @@ describe Exodus::Algorithms::StartingGemsPosition do
     it "should change substatus if game end" do
       allow(Exodus::BroadcastDataToUser).to receive(:new) { broadcast_service }
       lib.perform
-      expect(lib.broadcast_data[:result][:sub_status]).to eq('lose')
+      expect(lib.broadcast_data[:respond][:sub_status]).to eq('lose')
     end
   end
 end
