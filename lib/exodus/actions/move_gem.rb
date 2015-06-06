@@ -1,5 +1,6 @@
 class Exodus::Actions::MoveGem
   attr_accessor :gems_indexes, :gems_position, :game
+
   def initialize(params)
     @game = ::Game.find(params[:game_id])
     @gems_position = game.board.gems_position
@@ -11,6 +12,7 @@ class Exodus::Actions::MoveGem
     service = Exodus::Algorithms::DeleteCombinations.new(game, gems_position)
     if service.delete_able?
       result = { :result => service.perform }
+      check_board_on_possible_combinations(result)
       check_game_on_finishing(result)
       change_active_player_and_send_callback(result.clone)
       result
@@ -20,6 +22,14 @@ class Exodus::Actions::MoveGem
   end
 
   private
+
+  def check_board_on_possible_combinations(result)
+    service = Exodus::Algorithms::PossibleCombinations.new(game.board.gems_position)
+    unless service.perform
+      result[:new_gems] = Exodus::Algorithms::StartingGemsPosition.new.get_gems
+      result[:sub_status] = 'new_gems'
+    end
+  end
 
   def check_game_on_finishing(result)
     result[:status] = if game.players_data[game.inactive_player_token][:hp] <= 0

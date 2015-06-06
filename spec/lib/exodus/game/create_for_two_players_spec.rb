@@ -77,18 +77,18 @@ describe Exodus::Game::CreateForTwoPlayers do
       expect(Game.last.players).to eq([player_1, player_2])
     end
 
-    context "need calculate starting gem positions" do
+    context "need create board with starting gems positions" do
       let(:starting_gem_position_service) { double(:perform => true) }
 
-      it "should build starting gem positions service" do
-        expect(Exodus::Algorithms::StartingGemsPosition).to receive(:new) { starting_gem_position_service }
-        service.perform
+      before do
+        Game.delete_all
+        Board.delete_all
       end
 
-      it "should execute starting gem positions service" do
-        allow(Exodus::Algorithms::StartingGemsPosition).to receive(:new) { starting_gem_position_service }
-        expect(starting_gem_position_service).to receive(:perform)
+      it "should create board with starting gems" do
+        allow_any_instance_of(Exodus::Algorithms::StartingGemsPosition).to receive(:perform) { { '1' => 2 } }
         service.perform
+        expect(Board.last.gems_position).to eq({ '1' => 2 })
       end
     end
 

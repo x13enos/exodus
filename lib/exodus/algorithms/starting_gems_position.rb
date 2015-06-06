@@ -1,6 +1,6 @@
 class Exodus::Algorithms::StartingGemsPosition
   attr_accessor :gems, :game_id, :offset_array, :gems_hash
-  def initialize(game_id)
+  def initialize(game_id = nil)
     @game_id = game_id
     @gems = []
     @gems_hash = {}
@@ -9,15 +9,15 @@ class Exodus::Algorithms::StartingGemsPosition
 
   def perform
     add_gems_to_hash
-    create_board
+    return gems_hash
+  end
+
+  def get_gems
+    add_gems_to_hash
     return gems
   end
 
   private
-
-  def create_board
-    Game.find(game_id).create_board(:gems_position => gems_hash)
-  end
 
   def add_gems_to_hash
     (0..63).to_a.each do |index|

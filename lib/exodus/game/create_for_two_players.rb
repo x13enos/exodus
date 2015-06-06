@@ -9,7 +9,7 @@ class Exodus::Game::CreateForTwoPlayers
   def perform
     game = create_game
     add_players_to_game(game)
-    set_starting_game_positions(game)
+    create_board_with_starting_gems(game)
     send_callback_to_second_user
   end
 
@@ -54,8 +54,9 @@ class Exodus::Game::CreateForTwoPlayers
     game.players << players
   end
 
-  def set_starting_game_positions(game)
-    Exodus::Algorithms::StartingGemsPosition.new(game.id).perform
+  def create_board_with_starting_gems(game)
+    gems_position = Exodus::Algorithms::StartingGemsPosition.new.perform
+    game.create_board(:gems_position => gems_position)
   end
 
   def send_callback_to_second_user

@@ -97,6 +97,23 @@ describe Exodus::Algorithms::StartingGemsPosition do
         lib.perform
       end
 
+      context "when player not have ability take combination" do
+        before do
+          allow(Exodus::BroadcastDataToUser).to receive(:new) { broadcast_service }
+          allow_any_instance_of(Exodus::Algorithms::PossibleCombinations).to receive(:perform) { false }
+        end
+
+        it "should change substatus" do
+          expect(lib.perform[:sub_status]).to eq('new_gems')
+        end
+
+        it "should add new gems to result" do
+          new_gems = double
+          allow_any_instance_of(Exodus::Algorithms::StartingGemsPosition).to receive(:get_gems) { new_gems }
+          expect(lib.perform[:new_gems]).to eq(new_gems)
+        end
+      end
+
       context "when opponent died" do
         let(:win_players_data) do
           {

@@ -1,24 +1,33 @@
 myapp.application.module 'Gems_UpdateSituationOnBoard_Module', (MyModule) ->
 
   MyModule.perform = (data) ->
-    if data['status'] == 'success' || data['status'] == 'end'
+    if data['status'] != 'error' 
       change_gem_positions(data)
-    else if data['status'] == 'error'
+    else 
       return_gems_on_init_places(data)
 
   change_gem_positions = (data) ->
     _.each data['result'], (data_step, i) ->
       update_position(data_step, i)
 
-    change_active_player(data)
     if data['status'] == 'end'
       finish_game(data)
+    else if data["sub_status"] == 'new_gems'
+      update_all_gems(data)
+      change_active_player(data['result'].length + 1)
+    else
+      change_active_player(data['result'].length)
 
-  change_active_player = (data) ->
+
+  update_all_gems = (data) -> 
     setTimeout (->
-      myapp.application.PlayerModule.change_status()
+      myapp.application.Gems_UpdateAll.perform(data['new_gems']) 
     ), data['result'].length * 650 
 
+  change_active_player = (steps) ->
+    setTimeout (->
+      myapp.application.PlayerModule.change_status()
+    ), steps * 650
 
   finish_game = (data) ->
     setTimeout (->

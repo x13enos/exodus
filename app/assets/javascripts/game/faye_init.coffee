@@ -8,13 +8,6 @@ FayeService.prototype.move_two_gems = ->
     setTimeout (->
       myapp.application.Gems_UpdateSituationOnBoard_Module.perform(data['respond'])
     ), 400
-    setTimeout ( ->
-      myapp.application.ScreenModule.unblock()
-    ), 400 + (data['respond']['result'].length * 650)
-    setTimeout ( ->
-      new myapp.views.GameAlert({ text:"Your Turn" }).render()
-    ), data['respond']['result'].length * 650
-
 
 
 $ ->
